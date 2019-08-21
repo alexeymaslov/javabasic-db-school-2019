@@ -10,7 +10,11 @@ public class Main {
     public static void main(String[] args) {
         DistributionService service = new DistributionService();
         while (true) {
-            service.sendMail();
+            try {
+                service.sendMail();
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
             Thread.sleep(500);
         }
     }

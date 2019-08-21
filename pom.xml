@@ -9,6 +9,13 @@
     <version>1.0-SNAPSHOT</version>
 
     <dependencies>
+
+        <dependency>
+            <groupId>org.reflections</groupId>
+            <artifactId>reflections</artifactId>
+            <version>0.9.11</version>
+        </dependency>
+
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
@@ -29,8 +36,6 @@
 
 
 
-
-
     <build>
 
 
@@ -48,6 +53,8 @@
                     </execution>
                 </executions>
             </plugin>
+
+
 
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
