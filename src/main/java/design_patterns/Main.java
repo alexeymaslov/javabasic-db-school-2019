@@ -1,0 +1,17 @@
+package design_patterns;
+
+import lombok.SneakyThrows;
+
+/**
+ * @author Evgeny Borisov
+ */
+public class Main {
+    @SneakyThrows
+    public static void main(String[] args) {
+        DistributionService service = new DistributionService();
+        while (true) {
+            service.sendMail();
+            Thread.sleep(500);
+        }
+    }
+}

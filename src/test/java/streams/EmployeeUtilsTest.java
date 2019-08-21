@@ -3,6 +3,7 @@ package streams;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -21,6 +22,7 @@ public class EmployeeUtilsTest {
                 Employee.builder().name("Vasya").salary(20).build(),
                 Employee.builder().name("Vasya").salary(30).build()
         );
+        String str = "asd";
 
 
         Map<String, Integer> map = EmployeeUtils.mapNameToSalary(employees);
