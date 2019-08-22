@@ -3,7 +3,7 @@ package design_patterns;
 /**
  * @author Evgeny Borisov
  */
-@TemplateCode(3)
+@TemplateCode(2)
 public class GoodByeMailGenerator implements MailGenerator {
     @Override
     public String generateMail() {
