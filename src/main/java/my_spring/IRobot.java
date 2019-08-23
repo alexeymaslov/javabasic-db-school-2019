@@ -1,7 +1,6 @@
 package my_spring;
 
-import java.rmi.dgc.DGC;
-import java.util.Map;
+import javax.annotation.PostConstruct;
 
 /**
  * @author Evgeny Borisov
@@ -14,6 +13,10 @@ public class IRobot {
     private Cleaner cleaner;
 
 
+    @PostConstruct
+    public void init() {
+        System.out.println(speaker.getClass().getName());
+    }
 
     public void cleanRoom() {
         speaker.speak("I started...");

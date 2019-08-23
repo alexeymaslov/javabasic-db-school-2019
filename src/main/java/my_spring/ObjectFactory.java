@@ -36,6 +36,7 @@ public class ObjectFactory {
         type = resolveImpl(type);
         T t = create(type);
         configure(t);
+
         return t;
     }
 
