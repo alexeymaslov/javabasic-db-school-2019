@@ -22,7 +22,7 @@ public class TaxCalculatorTest {
 
         System.out.println();
 
-        TaxCalculator taxCalculator = new TaxCalculator();
+        TaxCalculator taxCalculator = new TaxCalculator(mock);
         double answer = taxCalculator.withNds(100);
         Assert.assertEquals(120,answer,0.000001);
     }

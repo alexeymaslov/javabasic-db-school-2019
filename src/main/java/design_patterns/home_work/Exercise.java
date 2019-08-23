@@ -17,19 +17,11 @@ public class Exercise {
 private double a;
 private double b;
 private double answer;
-//private Operation operation  //enum
+private Operation operation;
 
 
-
-
-
-
-
-
-
-
-
-
-
-
+    @Override
+    public String toString() {
+        return a+" "+operation +" "+b + " = "+answer;
+    }
 }
