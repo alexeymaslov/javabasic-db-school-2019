@@ -2,6 +2,7 @@ package my_spring;
 
 import design_patterns.strategy.heroes.RandomUtil;
 import lombok.SneakyThrows;
+import net.sf.cglib.proxy.Enhancer;
 import org.reflections.ReflectionUtils;
 import org.reflections.Reflections;
 
@@ -9,6 +10,7 @@ import javax.annotation.PostConstruct;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -40,7 +42,8 @@ public class ObjectFactory {
         T t = create(type);
         configure(t);
         invokeInit(t);
-
+//        Proxy.newProxyInstance(type.getClassLoader(),)
+//        Enhancer.
         return t;
     }
 
