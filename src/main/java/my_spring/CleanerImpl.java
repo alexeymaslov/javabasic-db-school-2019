@@ -1,5 +1,7 @@
 package my_spring;
 
+import javax.annotation.PostConstruct;
+
 /**
  * @author Evgeny Borisov
  */
@@ -8,7 +10,8 @@ public class CleanerImpl implements Cleaner {
     private int repeat;
 
 
-    public CleanerImpl() {
+    @PostConstruct
+    public void init () {
         System.out.println("repeat = " + repeat);
     }
 

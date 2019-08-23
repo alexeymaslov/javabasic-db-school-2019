@@ -5,7 +5,10 @@ import lombok.SneakyThrows;
 import org.reflections.ReflectionUtils;
 import org.reflections.Reflections;
 
+import javax.annotation.PostConstruct;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -36,8 +39,17 @@ public class ObjectFactory {
         type = resolveImpl(type);
         T t = create(type);
         configure(t);
+        invokeInit(t);
 
         return t;
+    }
+
+    private <T> void invokeInit(T t) throws IllegalAccessException, InvocationTargetException {
+        Class<?> type = t.getClass();
+        Set<Method> initMethods = ReflectionUtils.getAllMethods(type, method -> method.isAnnotationPresent(PostConstruct.class));
+        for (Method initMethod : initMethods) {
+            initMethod.invoke(t);
+        }
     }
 
     private <T> void configure(T t) {
