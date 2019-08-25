@@ -7,10 +7,7 @@ import org.reflections.ReflectionUtils;
 import org.reflections.Reflections;
 
 import javax.annotation.PostConstruct;
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.lang.reflect.Proxy;
+import java.lang.reflect.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -19,21 +16,13 @@ import java.util.Set;
  * @author Evgeny Borisov
  */
 public class ObjectFactory {
-    private static ObjectFactory ourInstance = new ObjectFactory();
-    private Config config = new JavaConfig();
-    private List<ObjectConfigurator> configurators = new ArrayList<>();
-
-    public static ObjectFactory getInstance() {
-        return ourInstance;
-    }
+    private Config config;
+    private List<ObjectConfigurator> configurators;
 
     @SneakyThrows
-    private ObjectFactory() {
-        Reflections scanner = new Reflections("my_spring");
-        Set<Class<? extends ObjectConfigurator>> classes = scanner.getSubTypesOf(ObjectConfigurator.class);
-        for (Class<? extends ObjectConfigurator> aClass : classes) {
-            configurators.add(aClass.getDeclaredConstructor().newInstance());
-        }
+    public ObjectFactory(Config config, List<ObjectConfigurator> configurators) {
+        this.config = config;
+        this.configurators = configurators;
     }
 
     @SneakyThrows
@@ -42,6 +31,7 @@ public class ObjectFactory {
         T t = create(type);
         configure(t);
         invokeInit(t);
+        t = tryToWrapObjectIntoBenchmarkProxyIfHasAnnotation(t);
 //        Proxy.newProxyInstance(type.getClassLoader(),)
 //        Enhancer.
         return t;
@@ -70,5 +60,23 @@ public class ObjectFactory {
         return type;
     }
 
+    private <T> T tryToWrapObjectIntoBenchmarkProxyIfHasAnnotation(T object) {
+        Class<?> aClass = object.getClass();
 
+        if (aClass.isAnnotationPresent(Benchmark.class)) {
+            InvocationHandler invocationHandler = (proxy, method, args) -> {
+                long start = System.nanoTime();
+                Object invoke = method.invoke(object, args);
+                long end = System.nanoTime();
+                System.out.println(method.getName() + ": " + (end-start) + " ns");
+                return invoke;
+            };
+
+            return (T) Proxy.newProxyInstance(aClass.getClassLoader(), aClass.getInterfaces(), invocationHandler);
+        }
+
+        // TODO use cglib
+
+        return object;
+    }
 }
